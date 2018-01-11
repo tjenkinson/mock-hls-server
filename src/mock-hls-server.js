@@ -12,9 +12,9 @@ const PROXY_QUERY_PARAM = 'url';
 class MockHLSServer {
     constructor({ host = 'localhost', port = 8080, windowSize = 10, initialDuration = 20, logLevel = 'none' } = {}) {
         this._logger = new winston.Logger({
-            level: logLevel,
             transports: logLevel !== 'none' ? [
                 new winston.transports.Console({
+                    level: logLevel,
                     handleExceptions: true,
                     exitOnError: false
                 })

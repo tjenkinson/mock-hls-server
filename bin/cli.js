@@ -9,7 +9,7 @@ const optionDefinitions = [
     { name: 'windowSize', type: Number, defaultValue: 10 },
     { name: 'initialDuration', type: Number, defaultValue: 10 },
     { name: 'event', type: Boolean, defaultValue: false },
-    { name: 'logLevel', type: Number, defaultValue: 'info' }
+    { name: 'logLevel', type: String, defaultValue: 'info' }
 ];
 
 const { host, port, windowSize, initialDuration, event, logLevel } = commandLineArgs(optionDefinitions);
