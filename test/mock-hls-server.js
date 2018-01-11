@@ -113,6 +113,8 @@ describe('MockHLSServer', () => {
                     '#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=8144656,BANDWIDTH=8178040,CODECS="avc1.64002a,mp4a.40.2",RESOLUTION=1920x1080,FRAME-RATE=60.000,CLOSED-CAPTIONS="cc1",AUDIO="aud1",SUBTITLES="sub1"',
                     '# Original URL: v9/prog_index.m3u8',
                     'http://localhost:8080/proxy?url=http%3A%2F%2Fexample.invalid%2Fv9%2Fprog_index.m3u8',
+                    '',
+                    '#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="aud1",LANGUAGE="en",NAME="English",AUTOSELECT=YES,DEFAULT=YES,CHANNELS="2",URI="http://localhost:8080/proxy?url=http%3A%2F%2Fexample.invalid%2Fa1%2Fprog_index.m3u8"',
                     ''
                 ]);
             });

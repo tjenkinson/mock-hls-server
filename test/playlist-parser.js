@@ -44,7 +44,9 @@ describe('PlaylistParser', () => {
             { raw: '#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2218327,BANDWIDTH=2227464,CODECS="avc1.640020,mp4a.40.2",RESOLUTION=960x540,FRAME-RATE=60.000,CLOSED-CAPTIONS="cc1",AUDIO="aud1",SUBTITLES="sub1"' },
             { raw: 'v5/prog_index.m3u8', metadata: { type: 'url' } },
             { raw: '#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=8144656,BANDWIDTH=8178040,CODECS="avc1.64002a,mp4a.40.2",RESOLUTION=1920x1080,FRAME-RATE=60.000,CLOSED-CAPTIONS="cc1",AUDIO="aud1",SUBTITLES="sub1"' },
-            { raw: 'v9/prog_index.m3u8', metadata: { type: 'url' } }
+            { raw: 'v9/prog_index.m3u8', metadata: { type: 'url' } },
+            { raw: '' },
+            { raw: '#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="aud1",LANGUAGE="en",NAME="English",AUTOSELECT=YES,DEFAULT=YES,CHANNELS="2",URI="a1/prog_index.m3u8"' }
         ]);
     });
 });

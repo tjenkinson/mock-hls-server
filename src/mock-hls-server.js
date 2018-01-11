@@ -125,6 +125,8 @@ class MockHLSServer {
         return [ ...header, ...visibleArea ].map((line) => {
             if (line.metadata && line.metadata.type === 'url') {
                 return this._rewriteUrl(playlistUrl, line.raw, false);
+            } else if (line.raw[0] === '#') {
+                return this._rewriteTagUrl(line.raw, playlistUrl);
             }
             return line.raw;
         }).join('\r\n') + '\r\n';
@@ -134,6 +136,8 @@ class MockHLSServer {
         return parsedPlaylist.map((line) => {
             if (line.metadata && line.metadata.type === 'url') {
                 return this._rewriteUrl(playlistUrl, line.raw);
+            } else if (line.raw[0] === '#') {
+                return this._rewriteTagUrl(line.raw, playlistUrl);
             }
             return line.raw;
         }).join('\r\n') + '\r\n';
@@ -173,6 +177,15 @@ class MockHLSServer {
                 : absoluteURL
             )
         );
+    }
+
+    // replace urls in tags (URI="X") with absolute ones
+    _rewriteTagUrl(line, baseUrl) {
+        return line.replace(/URI="(.*?)"/g, (match) => {
+            const url = match.slice(5, -1);
+            const absoluteURL = UrlToolkit.buildAbsoluteURL(baseUrl, url, { alwaysNormalize: true });
+            return 'URI="' + this._proxyBaseUrl + querystring.escape(absoluteURL) + '"';
+        });
     }
 }
 
