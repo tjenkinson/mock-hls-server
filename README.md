@@ -2,6 +2,8 @@
 [![Build Status](https://travis-ci.org/tjenkinson/mock-hls-server.svg?branch=master)](https://travis-ci.org/tjenkinson/mock-hls-server)
 
 # Mock HLS Server
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/tjenkinson/mock-hls-server.svg)](https://greenkeeper.io/)
 Fake a live/event HLS stream from a VOD one. Useful for testing.
 
 # Usage
