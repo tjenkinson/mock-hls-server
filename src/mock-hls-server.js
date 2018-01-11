@@ -10,15 +10,15 @@ const PROXY_PATH = '/proxy';
 const PROXY_QUERY_PARAM = 'url';
 
 class MockHLSServer {
-    constructor({ host = 'localhost', port = 8080, windowSize = 10, initialDuration = 20, logLevel = 'info' }) {
+    constructor({ host = 'localhost', port = 8080, windowSize = 10, initialDuration = 20, logLevel = 'none' } = {}) {
         this._logger = new winston.Logger({
             level: logLevel,
-            transports: [
+            transports: logLevel !== 'none' ? [
                 new winston.transports.Console({
                     handleExceptions: true,
                     exitOnError: false
                 })
-            ]
+            ] : []
         });
         this._proxyBaseUrl = 'http://' + host + ':' + port + PROXY_PATH + '?' + PROXY_QUERY_PARAM + '=';
         this._startTime = null;
@@ -50,7 +50,7 @@ class MockHLSServer {
         });
 
         app.listen(port, host, () => {
-            this._logger.info('Started on ' + host + ':' + port + '!')
+            this._logger.info('Started on ' + host + ':' + port + '!');
         });
     }
     
@@ -89,20 +89,20 @@ class MockHLSServer {
     _buildPlaylistResponse(parsedPlaylist, playlistUrl) {
         const currentTime = this._getTime();
         const windowSize = this._windowSize;
-        let { header, rest: visibleArea } = this._splitPlaylistIntoHeaderAndRest(parsedPlaylist, currentTime);
+        let { header, rest: visibleArea, reachedEnd } = this._splitPlaylistIntoHeaderAndRest(parsedPlaylist, currentTime);
         let mediaSequence = -1;
         if (windowSize !== null) {
             // we should remove the content from the start of the playlist that has expired
             const startTime = Math.max(0, currentTime - windowSize);
             let visibleAreaStart = 0;
-            visibleArea.some((line, i) => {
+            visibleArea.some((line) => {
                 if (line.metadata && line.metadata.type === 'url') {
                     if (line.metadata.time > startTime) {
                         return true;
                     }
                     mediaSequence++;
                     visibleAreaStart = line.metadata.startIndex - header.length;
-                };
+                }
                 return false;
             });
             visibleArea = visibleArea.slice(visibleAreaStart);
@@ -156,7 +156,8 @@ class MockHLSServer {
         });
         return {
             header: parsedPlaylist.slice(0, headerEnd),
-            rest: parsedPlaylist.slice(headerEnd, reachedEnd ? parsedPlaylist.length : visibleAreaEnd)
+            rest: parsedPlaylist.slice(headerEnd, reachedEnd ? parsedPlaylist.length : visibleAreaEnd),
+            reachedEnd
         };
     }
 

@@ -1,3 +1,3 @@
 module.exports = {
-    MockHLSServer: require('./mock-hls-server');
+    MockHLSServer: require('./mock-hls-server')
 };

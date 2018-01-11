@@ -4,7 +4,11 @@
   "description": "Fake a live/event HLS stream from a VOD one. Useful for testing.",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/cli.js"
+    "start": "node src/cli.js",
+    "pretest": "npm run lint",
+    "test": "mocha --recursive test",
+    "lint": "eslint .",
+    "lintFix": "eslint --fix ."
   },
   "bin": {
     "mock-hls-server": "./bin/cli.js"
@@ -35,5 +39,11 @@
     "node-fetch": "^1.7.3",
     "url-toolkit": "^2.1.2",
     "winston": "^2.4.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "eslint": "^4.15.0",
+    "mocha": "^4.1.0",
+    "proxyquire": "^1.8.0"
   }
 }

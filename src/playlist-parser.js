@@ -1,4 +1,4 @@
-const EXTINF = '#EXTINF:'
+const EXTINF = '#EXTINF:';
 
 // parse non-varient playlist
 // returns null if parsing fails
@@ -49,7 +49,7 @@ function parseVariantPlaylist(playlist) {
         return null;
     }
     
-    return playlist.map((line, i) => {
+    return playlist.map((line) => {
         const data = { raw: line };
         if (line && line[0] !== '#') {
             data.metadata = { type: 'url' };
