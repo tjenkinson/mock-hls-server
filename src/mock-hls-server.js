@@ -76,7 +76,7 @@ class MockHLSServer {
         let parsedPlaylist, parsedVariantPlaylist;
         if (parsedPlaylist = PlaylistParser.parsePlaylist(body)) {
             this._logger.debug('Building playlist response.');
-            return this._buildPlaylistResponse(parsedPlaylist);
+            return this._buildPlaylistResponse(parsedPlaylist, playlistUrl);
         } else if (parsedVariantPlaylist = PlaylistParser.parseVariantPlaylist(body)) {
             this._logger.debug('Building variant playlist response.');
             return this._buildVariantPlaylistResponse(parsedVariantPlaylist, playlistUrl);
@@ -86,7 +86,7 @@ class MockHLSServer {
         }
     }
 
-    _buildPlaylistResponse(parsedPlaylist) {
+    _buildPlaylistResponse(parsedPlaylist, playlistUrl) {
         const currentTime = this._getTime();
         const windowSize = this._windowSize;
         let { header, rest: visibleArea } = this._splitPlaylistIntoHeaderAndRest(parsedPlaylist, currentTime);
@@ -122,7 +122,12 @@ class MockHLSServer {
                 visibleArea.push({ raw: '#EXT-X-ENDLIST' });
             }
         }
-        return [ ...header, ...visibleArea ].map((line) => line.raw).join('\r\n') + '\r\n';
+        return [ ...header, ...visibleArea ].map((line) => {
+            if (line.metadata && line.metadata.type === 'url') {
+                return this._rewriteUrl(playlistUrl, line.raw, false);
+            }
+            return line.raw;
+        }).join('\r\n') + '\r\n';
     }
 
     _buildVariantPlaylistResponse(parsedPlaylist, playlistUrl) {
@@ -155,14 +160,16 @@ class MockHLSServer {
         };
     }
 
-    _rewriteUrl(baseUrl, url) {
+    _rewriteUrl(baseUrl, url, throughProxy = true) {
+        const absoluteURL = UrlToolkit.buildAbsoluteURL(baseUrl, url, { alwaysNormalize: true });
         return (
             '# Original URL: ' +
             url +
             '\r\n' +
-            this._proxyBaseUrl +
-            querystring.escape(
-                UrlToolkit.buildAbsoluteURL(baseUrl, url, { alwaysNormalize: true })
+            (
+                throughProxy
+                ? this._proxyBaseUrl + querystring.escape(absoluteURL)
+                : absoluteURL
             )
         );
     }
