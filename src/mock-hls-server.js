@@ -33,6 +33,10 @@ class MockHLSServer {
             }
             this._logger.debug('Got request.', url);
             fetch(url).then((fetchRes) => Promise.all([Promise.resolve(fetchRes), fetchRes.text()])).then(([ fetchRes, content ]) => {
+                this._logger.debug('Got response from proxy.', url, fetchRes.status);
+                if (!(fetchRes.status >= 200 && fetchRes.status < 300)) {
+                  this._logger.warn('Got ' + fetchRes.status + ' response code.', url);
+                }
                 res.status(fetchRes.status);
                 res.set('Access-Control-Allow-Origin', '*');
                 res.set('content-type', fetchRes.headers.get('content-type'));
