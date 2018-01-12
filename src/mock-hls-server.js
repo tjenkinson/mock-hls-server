@@ -25,7 +25,7 @@ class MockHLSServer {
         this._initialDuration = initialDuration;
         this._windowSize = windowSize;
 
-        const app = this._app = express();
+        const app = express();
         app.get(PROXY_PATH, (req, res, next) => {
             const url = req.query.url;
             if (!url) {
@@ -49,7 +49,7 @@ class MockHLSServer {
             });
         });
 
-        app.listen(port, host, () => {
+        this._server = app.listen(port, host, () => {
             this._logger.info('Started on ' + host + ':' + port + '!');
         });
     }
@@ -60,7 +60,7 @@ class MockHLSServer {
     }
     
     stop() {
-        this._app.close();
+        this._server.close();
         this._logger.info('Stopped.');
     }
 
