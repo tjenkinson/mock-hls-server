@@ -1,6 +1,6 @@
 {
   "name": "mock-hls-server",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Fake a live/event HLS stream from a VOD one. Useful for testing.",
   "main": "src/index.js",
   "scripts": {
