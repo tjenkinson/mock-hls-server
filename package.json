@@ -8,11 +8,13 @@
     "pretest": "npm run lint",
     "test": "mocha --recursive test",
     "lint": "eslint .",
-    "lintFix": "eslint --fix .",
-    "precommit": "npm run lint"
+    "lintFix": "eslint --fix ."
   },
   "bin": {
     "mock-hls-server": "./bin/cli.js"
+  },
+  "hooks": {
+    "pre-commit": "npm run lint"
   },
   "repository": {
     "type": "git",
@@ -43,7 +45,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "eslint": "^4.15.0",
-    "husky": "^0.14.3",
+    "husky": "^4.2.5",
     "mocha": "^8.1.3",
     "proxyquire": "^1.8.0"
   }
