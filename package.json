@@ -8,11 +8,13 @@
     "pretest": "npm run lint",
     "test": "mocha --recursive test",
     "lint": "eslint .",
-    "lintFix": "eslint --fix .",
-    "precommit": "npm run lint"
+    "lintFix": "eslint --fix ."
   },
   "bin": {
     "mock-hls-server": "./bin/cli.js"
+  },
+  "hooks": {
+    "pre-commit": "npm run lint"
   },
   "repository": {
     "type": "git",
