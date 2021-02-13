@@ -1,6 +1,4 @@
 [![npm version](https://badge.fury.io/js/mock-hls-server.svg)](https://badge.fury.io/js/mock-hls-server)
-[![Build Status](https://travis-ci.org/tjenkinson/mock-hls-server.svg?branch=master)](https://travis-ci.org/tjenkinson/mock-hls-server)
-[![Greenkeeper badge](https://badges.greenkeeper.io/tjenkinson/mock-hls-server.svg)](https://greenkeeper.io/)
 
 # Mock HLS Server
 Fake a live/event HLS stream from a VOD one. Useful for testing.
