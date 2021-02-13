@@ -6,9 +6,21 @@ const { parsePlaylist, parseVariantPlaylist } = require('../src/playlist-parser'
 const PLAYLIST = fs.readFileSync(path.resolve(__dirname, 'fixtures/playlist.m3u8'), 'utf8');
 const VARIANT_PLAYLIST = fs.readFileSync(path.resolve(__dirname, './fixtures/master.m3u8'), 'utf8');
 
+function consume (reader, limit=Infinity) {
+    const res = [];
+    for (let i = 0; i < limit; i++) {
+        const value = reader.read();
+        if (!value) {
+            break;
+        }
+        res.push(value);
+    }
+    return res;
+}
+
 describe('PlaylistParser', () => {
-    it('parses a playlist correctly', () => {
-        expect(parsePlaylist(PLAYLIST)).to.deep.equal([
+    it('parses a finite playlist correctly', () => {
+        expect(consume(parsePlaylist(PLAYLIST, false)())).to.deep.equal([
             { raw: '#EXTM3U' },
             { raw: '#EXT-X-TARGETDURATION:6' },
             { raw: '#EXT-X-VERSION:3' },
@@ -31,12 +43,48 @@ describe('PlaylistParser', () => {
             { raw: '#EXT-X-BITRATE:378' },
             { raw: 'fileSequence3.ts',
                 metadata: { type: 'url', time: 18, startIndex: 15, end: true } },
-            { raw: '#EXT-X-ENDLIST' }
+            { raw: '#EXT-X-ENDLIST',  metadata: { type: 'endlist' } }
+        ]);
+    });
+
+    it('parses an infinite playlist correctly', () => {
+        expect(consume(parsePlaylist(PLAYLIST, true)(), 25)).to.deep.equal([
+            { raw: '#EXTM3U' },
+            { raw: '#EXT-X-TARGETDURATION:6' },
+            { raw: '#EXT-X-VERSION:3' },
+            { raw: '#EXT-X-MEDIA-SEQUENCE:0' },
+            { raw: '#EXT-X-PLAYLIST-TYPE:VOD' },
+            { raw: '#EXT-X-INDEPENDENT-SEGMENTS' },
+            { raw: '#EXTINF:6.00000,' },
+            { raw: '#EXT-X-BITRATE:377' },
+            { raw: 'fileSequence0.ts',
+                metadata: { type: 'url', time: 0, startIndex: 6, end: false } },
+            { raw: '#EXTINF:6.00000,' },
+            { raw: '#EXT-X-BITRATE:385' },
+            { raw: 'fileSequence1.ts',
+                metadata: { type: 'url', time: 6, startIndex: 9, end: false } },
+            { raw: '#EXTINF:6.00000,' },
+            { raw: '#EXT-X-BITRATE:388' },
+            { raw: 'fileSequence2.ts',
+                metadata: { type: 'url', time: 12, startIndex: 12, end: false } },
+            { raw: '#EXTINF:6.00000,' },
+            { raw: '#EXT-X-BITRATE:378' },
+            { raw: 'fileSequence3.ts',
+                metadata: { type: 'url', time: 18, startIndex: 15, end: false } },
+            { raw: '#EXT-X-DISCONTINUITY' },
+            { raw: '#EXTINF:6.00000,' },
+            { raw: '#EXT-X-BITRATE:377' },
+            { raw: 'fileSequence0.ts',
+                metadata: { type: 'url', time: 24, startIndex: 19, end: false } },
+            { raw: '#EXTINF:6.00000,' },
+            { raw: '#EXT-X-BITRATE:385' },
+            { raw: 'fileSequence1.ts',
+                metadata: { type: 'url', time: 30, startIndex: 22, end: false } },
         ]);
     });
 
     it('parses a variant playlist correctly', () => {
-        expect(parseVariantPlaylist(VARIANT_PLAYLIST)).to.deep.equal([
+        expect(consume(parseVariantPlaylist(VARIANT_PLAYLIST)())).to.deep.equal([
             { raw: '#EXTM3U' },
             { raw: '#EXT-X-VERSION:6' },
             { raw: '#EXT-X-INDEPENDENT-SEGMENTS' },

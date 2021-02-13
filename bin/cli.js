@@ -9,8 +9,9 @@ const optionDefinitions = [
     { name: 'windowSize', type: Number, defaultValue: 10 },
     { name: 'initialDuration', type: Number, defaultValue: 10 },
     { name: 'event', type: Boolean, defaultValue: false },
+    { name: 'loop', type: Boolean, defaultValue: false },
     { name: 'logLevel', type: String, defaultValue: 'info' }
 ];
 
-const { host, port, windowSize, initialDuration, event, logLevel } = commandLineArgs(optionDefinitions);
-new MockHLSServer({ host, port, windowSize: event ? null : windowSize, initialDuration, logLevel });
+const { host, port, windowSize, initialDuration, event, loop, logLevel } = commandLineArgs(optionDefinitions);
+new MockHLSServer({ host, port, windowSize: event ? null : windowSize, initialDuration, loop, logLevel });
