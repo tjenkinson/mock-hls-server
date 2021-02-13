@@ -10,7 +10,7 @@ const PROXY_PATH = '/proxy';
 const PROXY_QUERY_PARAM = 'url';
 
 class MockHLSServer {
-    constructor({ host = 'localhost', port = 8080, windowSize = 10, initialDuration = 20, logLevel = 'none' } = {}) {
+    constructor({ host = 'localhost', port = 8080, windowSize = 10, initialDuration = 20, loop = false, logLevel = 'none' } = {}) {
         this._logger = new winston.Logger({
             transports: logLevel !== 'none' ? [
                 new winston.transports.Console({
@@ -24,6 +24,7 @@ class MockHLSServer {
         this._startTime = null;
         this._initialDuration = initialDuration;
         this._windowSize = windowSize;
+        this._loop = loop;
 
         const app = express();
         app.get(PROXY_PATH, (req, res, next) => {
@@ -35,7 +36,7 @@ class MockHLSServer {
             fetch(url).then((fetchRes) => Promise.all([Promise.resolve(fetchRes), fetchRes.text()])).then(([ fetchRes, content ]) => {
                 this._logger.debug('Got response from proxy.', url, fetchRes.status);
                 if (!(fetchRes.status >= 200 && fetchRes.status < 300)) {
-                  this._logger.warn('Got ' + fetchRes.status + ' response code.', url);
+                    this._logger.warn('Got ' + fetchRes.status + ' response code.', url);
                 }
                 res.status(fetchRes.status);
                 res.set('Access-Control-Allow-Origin', '*');
@@ -78,7 +79,7 @@ class MockHLSServer {
             this._logger.debug('Started stream.');
         }
         let parsedPlaylist, parsedVariantPlaylist;
-        if (parsedPlaylist = PlaylistParser.parsePlaylist(body)) {
+        if (parsedPlaylist = PlaylistParser.parsePlaylist(body, this._loop)) {
             this._logger.debug('Building playlist response.');
             return this._buildPlaylistResponse(parsedPlaylist, playlistUrl);
         } else if (parsedVariantPlaylist = PlaylistParser.parseVariantPlaylist(body)) {
@@ -137,34 +138,47 @@ class MockHLSServer {
     }
 
     _buildVariantPlaylistResponse(parsedPlaylist, playlistUrl) {
-        return parsedPlaylist.map((line) => {
+        let line = null;
+        const res = [];
+        const reader = parsedPlaylist();
+        while(line = reader.read()) {
             if (line.metadata && line.metadata.type === 'url') {
-                return this._rewriteUrl(playlistUrl, line.raw);
+                res.push(this._rewriteUrl(playlistUrl, line.raw));
             } else if (line.raw[0] === '#') {
-                return this._rewriteTagUrl(line.raw, playlistUrl);
+                res.push(this._rewriteTagUrl(line.raw, playlistUrl));
+            } else {
+                res.push(line.raw);
             }
-            return line.raw;
-        }).join('\r\n') + '\r\n';
+        }
+        return res.join('\r\n') + '\r\n';
     }
 
     _splitPlaylistIntoHeaderAndRest(parsedPlaylist, currentTime) {
         let headerEnd = 0;
         let visibleAreaEnd = 0;
-        const reachedEnd = !parsedPlaylist.some((line, i) => {
+
+        const lines = [];
+        let line = null;
+        let reachedEnd = true;
+        let i = -1;
+        const reader = parsedPlaylist();
+        while(line = reader.read()) {
+            i++;
+            lines.push(line);
             if (line.metadata && line.metadata.type === 'url') {
                 if (!headerEnd) {
                     headerEnd = line.metadata.startIndex;
                 }
                 if (line.metadata.time > currentTime) {
-                    return true;
+                    reachedEnd = false;
+                    break;
                 }
                 visibleAreaEnd = i + 1;
             }
-            return false;
-        });
+        }
         return {
-            header: parsedPlaylist.slice(0, headerEnd),
-            rest: parsedPlaylist.slice(headerEnd, reachedEnd ? parsedPlaylist.length : visibleAreaEnd),
+            header: lines.slice(0, headerEnd),
+            rest: lines.slice(headerEnd, reachedEnd ? lines.length : visibleAreaEnd),
             reachedEnd
         };
     }

@@ -1,6 +1,4 @@
 [![npm version](https://badge.fury.io/js/mock-hls-server.svg)](https://badge.fury.io/js/mock-hls-server)
-[![Build Status](https://travis-ci.org/tjenkinson/mock-hls-server.svg?branch=master)](https://travis-ci.org/tjenkinson/mock-hls-server)
-[![Greenkeeper badge](https://badges.greenkeeper.io/tjenkinson/mock-hls-server.svg)](https://greenkeeper.io/)
 
 # Mock HLS Server
 Fake a live/event HLS stream from a VOD one. Useful for testing.
@@ -27,6 +25,7 @@ These are all the options:
 - `windowSize`: The number of seconds to keep in the playlist. Not valid with `--event`.
 - `initialDuration`: The number of seconds into the stream that should be available on the first playlist request.
 - `event`: Changes the playlist type to EVENT, meaning no segments will ever be removed.
+- `loop`: Loop the playlist.
 - `logLevel`
 
 Now start your stream at `http://localhost:8080/proxy?url=<stream url>`. The first playlist request will start the stream. Variant playlists are supported, and the playlist URL's contained in them will be rewritten to route through the proxy.
