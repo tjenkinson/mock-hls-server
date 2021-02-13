@@ -4,7 +4,7 @@
   "description": "Fake a live/event HLS stream from a VOD one. Useful for testing.",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/cli.js",
+    "start": "node bin/cli.js",
     "pretest": "npm run lint",
     "test": "mocha --recursive test",
     "lint": "eslint .",
