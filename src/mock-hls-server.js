@@ -186,14 +186,9 @@ class MockHLSServer {
     _rewriteUrl(baseUrl, url, throughProxy = true) {
         const absoluteURL = UrlToolkit.buildAbsoluteURL(baseUrl, url, { alwaysNormalize: true });
         return (
-            '# Original URL: ' +
-            url +
-            '\r\n' +
-            (
-                throughProxy
-                ? this._proxyBaseUrl + querystring.escape(absoluteURL)
-                : absoluteURL
-            )
+            throughProxy
+            ? this._proxyBaseUrl + querystring.escape(absoluteURL)
+            : absoluteURL
         );
     }
 

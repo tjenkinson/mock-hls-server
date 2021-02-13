@@ -51,7 +51,6 @@ describe('MockHLSServer', () => {
                                 '#EXT-X-INDEPENDENT-SEGMENTS',
                                 '#EXTINF:6.00000,',
                                 '#EXT-X-BITRATE:377',
-                                '# Original URL: fileSequence0.ts',
                                 'http://example.invalid/fileSequence0.ts',
                                 ''
                             ]);
@@ -69,15 +68,12 @@ describe('MockHLSServer', () => {
                                 '#EXT-X-INDEPENDENT-SEGMENTS',
                                 '#EXTINF:6.00000,',
                                 '#EXT-X-BITRATE:385',
-                                '# Original URL: fileSequence1.ts',
                                 'http://example.invalid/fileSequence1.ts',
                                 '#EXTINF:6.00000,',
                                 '#EXT-X-BITRATE:388',
-                                '# Original URL: fileSequence2.ts',
                                 'http://example.invalid/fileSequence2.ts',
                                 '#EXTINF:6.00000,',
                                 '#EXT-X-BITRATE:378',
-                                '# Original URL: fileSequence3.ts',
                                 'http://example.invalid/fileSequence3.ts',
                                 ''
                             ]);
@@ -95,17 +91,14 @@ describe('MockHLSServer', () => {
                                 '#EXT-X-INDEPENDENT-SEGMENTS',
                                 '#EXTINF:6.00000,',
                                 '#EXT-X-BITRATE:388',
-                                '# Original URL: fileSequence2.ts',
                                 'http://example.invalid/fileSequence2.ts',
                                 '#EXTINF:6.00000,',
                                 '#EXT-X-BITRATE:378',
-                                '# Original URL: fileSequence3.ts',
                                 'http://example.invalid/fileSequence3.ts',
                                 ...(loop ? [
                                     '#EXT-X-DISCONTINUITY',
                                     '#EXTINF:6.00000,',
                                     '#EXT-X-BITRATE:377',
-                                    '# Original URL: fileSequence0.ts',
                                     'http://example.invalid/fileSequence0.ts',
                                 ] : []),
                                 ''
@@ -124,7 +117,6 @@ describe('MockHLSServer', () => {
                                 '#EXT-X-INDEPENDENT-SEGMENTS',
                                 '#EXTINF:6.00000,',
                                 '#EXT-X-BITRATE:378',
-                                '# Original URL: fileSequence3.ts',
                                 'http://example.invalid/fileSequence3.ts',
                                 ''
                             ] : [
@@ -135,11 +127,9 @@ describe('MockHLSServer', () => {
                                 '#EXT-X-INDEPENDENT-SEGMENTS',
                                 '#EXTINF:6.00000,',
                                 '#EXT-X-BITRATE:385',
-                                '# Original URL: fileSequence1.ts',
                                 'http://example.invalid/fileSequence1.ts',
                                 '#EXTINF:6.00000,',
                                 '#EXT-X-BITRATE:388',
-                                '# Original URL: fileSequence2.ts',
                                 'http://example.invalid/fileSequence2.ts',
                                 ''
                             ]);
@@ -155,10 +145,8 @@ describe('MockHLSServer', () => {
                             '#EXT-X-INDEPENDENT-SEGMENTS',
                             '',
                             '#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=2218327,BANDWIDTH=2227464,CODECS="avc1.640020,mp4a.40.2",RESOLUTION=960x540,FRAME-RATE=60.000,CLOSED-CAPTIONS="cc1",AUDIO="aud1",SUBTITLES="sub1"',
-                            '# Original URL: v5/prog_index.m3u8',
                             'http://localhost:8080/proxy?url=http%3A%2F%2Fexample.invalid%2Fv5%2Fprog_index.m3u8',
                             '#EXT-X-STREAM-INF:AVERAGE-BANDWIDTH=8144656,BANDWIDTH=8178040,CODECS="avc1.64002a,mp4a.40.2",RESOLUTION=1920x1080,FRAME-RATE=60.000,CLOSED-CAPTIONS="cc1",AUDIO="aud1",SUBTITLES="sub1"',
-                            '# Original URL: v9/prog_index.m3u8',
                             'http://localhost:8080/proxy?url=http%3A%2F%2Fexample.invalid%2Fv9%2Fprog_index.m3u8',
                             '',
                             '#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="aud1",LANGUAGE="en",NAME="English",AUTOSELECT=YES,DEFAULT=YES,CHANNELS="2",URI="http://localhost:8080/proxy?url=http%3A%2F%2Fexample.invalid%2Fa1%2Fprog_index.m3u8"',
@@ -182,7 +170,6 @@ describe('MockHLSServer', () => {
                                 '#EXT-X-INDEPENDENT-SEGMENTS',
                                 '#EXTINF:6.00000,',
                                 '#EXT-X-BITRATE:377',
-                                '# Original URL: fileSequence0.ts',
                                 'http://example.invalid/fileSequence0.ts',
                                 ''
                             ]);
@@ -200,19 +187,15 @@ describe('MockHLSServer', () => {
                                 '#EXT-X-INDEPENDENT-SEGMENTS',
                                 '#EXTINF:6.00000,',
                                 '#EXT-X-BITRATE:377',
-                                '# Original URL: fileSequence0.ts',
                                 'http://example.invalid/fileSequence0.ts',
                                 '#EXTINF:6.00000,',
                                 '#EXT-X-BITRATE:385',
-                                '# Original URL: fileSequence1.ts',
                                 'http://example.invalid/fileSequence1.ts',
                                 '#EXTINF:6.00000,',
                                 '#EXT-X-BITRATE:388',
-                                '# Original URL: fileSequence2.ts',
                                 'http://example.invalid/fileSequence2.ts',
                                 '#EXTINF:6.00000,',
                                 '#EXT-X-BITRATE:378',
-                                '# Original URL: fileSequence3.ts',
                                 'http://example.invalid/fileSequence3.ts',
                                 ...(!loop ? ['#EXT-X-ENDLIST'] : []),
                                 ''
@@ -231,33 +214,29 @@ describe('MockHLSServer', () => {
                                     '#EXT-X-INDEPENDENT-SEGMENTS',
                                     '#EXTINF:6.00000,',
                                     '#EXT-X-BITRATE:377',
-                                    '# Original URL: fileSequence0.ts',
                                     'http://example.invalid/fileSequence0.ts',
                                     '#EXTINF:6.00000,',
                                     '#EXT-X-BITRATE:385',
-                                    '# Original URL: fileSequence1.ts',
                                     'http://example.invalid/fileSequence1.ts',
                                     '#EXTINF:6.00000,',
                                     '#EXT-X-BITRATE:388',
-                                    '# Original URL: fileSequence2.ts',
                                     'http://example.invalid/fileSequence2.ts',
                                     '#EXTINF:6.00000,',
                                     '#EXT-X-BITRATE:378',
-                                    '# Original URL: fileSequence3.ts',
                                     'http://example.invalid/fileSequence3.ts',
                                     '#EXT-X-ENDLIST',
                                     ''
                                 ]);
                             } else {
-                                expect(response.length).to.equal(7090);
+                                expect(response.length).to.equal(5423);
                                 expect(response.slice(-9)).to.deep.equal([
+                                    '#EXT-X-BITRATE:377',
+                                    'http://example.invalid/fileSequence0.ts',
                                     '#EXTINF:6.00000,',
                                     '#EXT-X-BITRATE:385',
-                                    '# Original URL: fileSequence1.ts',
                                     'http://example.invalid/fileSequence1.ts',
                                     '#EXTINF:6.00000,',
                                     '#EXT-X-BITRATE:388',
-                                    '# Original URL: fileSequence2.ts',
                                     'http://example.invalid/fileSequence2.ts',
                                     ''
                                 ]);
