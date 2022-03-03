@@ -33,8 +33,7 @@ describe('MockHLSServer', () => {
             expect(server._startTime).to.not.be.null;
         });
 
-        // [false, true].forEach((loop) => {
-        [true].forEach((loop) => {
+        [false, true].forEach((loop) => {
             describe(`with loop option ${loop ? 'enabled' : 'disabled'}`, () => {
                 describe('in live mode', () => {  
                     beforeEach(() => server = new MockHLSServer({ loop }));
