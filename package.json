@@ -38,7 +38,7 @@
   "dependencies": {
     "command-line-args": "^4.0.7",
     "express": "^4.16.2",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.2.6",
     "url-toolkit": "^2.1.2",
     "winston": "^2.4.0"
   },
