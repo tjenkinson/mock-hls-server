@@ -37,7 +37,7 @@
   "homepage": "https://github.com/tjenkinson/mock-hls-server#readme",
   "dependencies": {
     "command-line-args": "^4.0.7",
-    "express": "^4.16.2",
+    "express": "^4.21.0",
     "node-fetch": "^2.6.1",
     "url-toolkit": "^2.1.2",
     "winston": "^2.4.0"
